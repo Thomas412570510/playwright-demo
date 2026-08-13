@@ -4,9 +4,16 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from 'dotenv';
+// 強制載入 D 槽的環境變數檔
+dotenv.config({ path: 'D:\\PlaywrightData\\.env' });
+
+import fs from 'fs';
+import path from 'path';
+
+// 動態判斷是否有登入狀態檔 (Cookie)
+const authFile = path.resolve(__dirname, '.auth/user.json');
+const storageState = fs.existsSync(authFile) ? authFile : undefined;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -25,8 +32,11 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    // 注入登入狀態 (如果檔案存在的話)
+    storageState,
+    
+    /* Base URL to use in actions like `await page.goto('/')`. */
+    baseURL: process.env.BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
