@@ -12,6 +12,7 @@ description: Playwright 企業級擴充技能包 (極致隔離建置版)。包�
 2. **建立隔離區與初始化**：
    - 在專案根目錄建立一個子資料夾：`playwright-tests/`。
    - **進入 `playwright-tests/` 資料夾內**，執行 Playwright 官方初始化指令建立基礎環境（例如 `npm create playwright@latest . --quiet --browser=chromium --lang=TypeScript`）。
+   - **【防呆機制】** 在 `playwright-tests/` 內強制建立 `tests/` 資料夾，並寫入一支簡單的 `example.spec.ts` 範例腳本（例如驗證 `page.goto('https://example.com')`），以確保第一次執行 `npm run test` 時絕對不會發生「No tests found」報錯。
 3. **安裝進階依賴與引擎 (限隔離區內)**：
    - 在 `playwright-tests/` 內執行 `npm install ffmpeg-static fluent-ffmpeg`。
    - 將工作區根目錄中 `.agents/skills/record-playwright/scripts/` 資料夾底下的 `record-session.js` 與 `convert-video.js` 複製到 **`playwright-tests/`** 內。
