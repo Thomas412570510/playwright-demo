@@ -1,38 +1,37 @@
 # 🎁 Playwright 企業級擴充技能包 (AI 專屬)
 
 這是一個基於 Antigravity 架構打造的「可攜式 AI 技能包」。
-它可以將任何一台原廠、陽春的 Playwright 專案，瞬間自動升級為具備「全時截圖追蹤」、「崩潰自動急救」、「MP4 無縫轉檔」的企業級自動化測試架構！
+它可以將任何一個**全新空白的資料夾**，瞬間自動建置成具備「VSCode 深度整合」、「全時截圖追蹤」、「崩潰自動急救」、「MP4 無縫轉檔」的企業級自動化測試架構！
 
 ## 🚀 給人類開發者的使用說明
 
-如果您想要在全新的 Playwright 專案中使用這套強大的架構，您只需要三個簡單的步驟：
+如果您想要建立一個全新的 Playwright 自動化專案，現在的流程已經被我們極致簡化為兩個步驟：
 
-### 步驟 1：原廠起手式
-請在您的終端機，使用官方標準指令建立一個最乾淨的專案：
-```bash
-npm create playwright@latest . --quiet --browser=chromium --lang=TypeScript
-```
-
-### 步驟 2：植入 AI 大腦
-請將這個包含技能的 `.agents` 資料夾，完整複製並貼上到您新專案的根目錄下。
+### 步驟 1：植入 AI 大腦
+在 VSCode 中開啟一個**空白的資料夾**。
+接著將這個包含技能的 `.agents` 資料夾，完整複製並貼上到您的資料夾中。
 這會讓您的 AI 代理人 (Agent) 瞬間學會這項終極技能！
 
-### 步驟 3：呼叫 AI 施展魔法
+### 步驟 2：呼叫 AI 施展一鍵安裝魔法
 打開您的 AI 對話框，對它輸入以下這段咒語：
-> **「請幫我載入 record-playwright 技能並安裝環境」**
+> **「請幫我載入 record-playwright 技能並建置環境」**
 
 接著您就可以去泡杯咖啡了 ☕！
-AI 會自動閱讀 `SKILL.md` 裡的最高指令，自動幫您複製 `scripts/` 裡的神器腳本、修改 `package.json` 與 `playwright.config.ts`、甚至連 `.env` 和 `.gitignore` 都幫您設定好。
+AI 會自動閱讀 `SKILL.md` 裡的最高指令，自動幫您：
+1. 在背景安裝 VSCode 專屬的 Playwright 擴充功能 (`ms-playwright.playwright`)。
+2. 自動下載並初始化 Playwright 原廠框架。
+3. 複製 `scripts/` 裡的神器腳本並修改 `package.json` 與 `playwright.config.ts`。
+4. 自動幫您設定好 `.env` 和 `.gitignore` 防護網。
 
 ---
 
 ## 🎮 日常開發工作流 (安裝完成後)
 
-當 AI 幫您把環境魔改完畢後，您未來的日常工作流會變得極度輕鬆：
+當 AI 幫您把環境建置完畢後，您未來的日常工作流會變得極度輕鬆：
 
 1. **想錄製新腳本時**：
    對 AI 說或是手動輸入：**「我要錄腳本」** 或是 `npm run codegen`。
-   *(這會觸發全時截圖錄影神器，記得錄完要按 Inspector 上的 ▶️ Resume 鍵存檔！)*
+   *(⚠️ **注意**：雖然左側有 VSCode 擴充套件，但請不要按面板上的「Record new」按鈕，因為它會跳過我們的截圖防護網！請務必使用 AI 或 npm 指令錄製。)*
 
 2. **想跑自動化測試時**：
    直接執行：`npm run test`。

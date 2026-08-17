@@ -1,21 +1,23 @@
 ---
 name: record-playwright
-description: Playwright 企業級擴充技能包。包含自動安裝環境、注入截圖神器與轉檔引擎，並強制啟動人機協作除錯 SOP。當使用者要求「安裝擴充包」或「錄製腳本」時觸發。
+description: Playwright 企業級擴充技能包。包含自動安裝 VSCode 擴充、初始化專案、注入截圖神器與轉檔引擎，並強制啟動人機協作除錯 SOP。當使用者要求「安裝擴充包」或「錄製腳本」時觸發。
 ---
 
 # 🚀 Playwright 企業級擴充技能包 (Installer & SOP)
 
-## 🛠️ 第一階段：AI 自動安裝與環境魔改指令
-當使用者呼叫此技能，要求升級或安裝環境時，Agent **必須主動執行**以下安裝步驟：
+## 🛠️ 第一階段：AI 自動安裝與環境建置指令
+當使用者在全新的空白資料夾中呼叫此技能，要求升級或安裝環境時，Agent **必須主動執行**以下安裝步驟（請將環境建置於**根目錄**）：
 
-1. **複製核心引擎**：將本技能庫 `scripts/` 資料夾底下的 `record-session.js` 與 `convert-video.js` 複製到專案的根目錄。
-2. **安裝必備套件**：執行 `npm install ffmpeg-static fluent-ffmpeg`。
-3. **注入 NPM 腳本**：修改專案根目錄的 `package.json`，在 `"scripts"` 區塊中加入 `"codegen": "node record-session.js"`。
-4. **架設崩潰防護網**：修改 `playwright.config.ts`，將 `use` 區塊中的設定強制改為：
-   - `trace: 'retain-on-failure'`
-   - `screenshot: 'only-on-failure'`
-   - `video: 'on'`
-5. **完成回報**：安裝完畢後，向使用者回報安裝成功，並提示使用者可以隨時說出「我要錄腳本」來啟動最高指令 SOP。
+1. **安裝 VSCode 官方擴充套件**：執行終端機指令 `code --install-extension ms-playwright.playwright`，幫使用者自動安裝 VSCode 左側的 Playwright 測試面板。
+2. **初始化 Playwright 專案**：在專案根目錄自動執行 Playwright 官方初始化指令建立基礎環境（例如 `npm create playwright@latest . --quiet --browser=chromium --lang=TypeScript` 或手動為使用者建立 `package.json` 與 `playwright.config.ts`）。
+3. **安裝進階依賴與引擎**：
+   - 執行 `npm install ffmpeg-static fluent-ffmpeg`。
+   - 將本技能庫 `scripts/` 資料夾底下的 `record-session.js` 與 `convert-video.js` 複製到專案的根目錄。
+4. **環境防護與配置魔改**：
+   - 修改 `package.json`，在 `"scripts"` 中加入 `"codegen": "node record-session.js"`。
+   - 修改 `playwright.config.ts`，強制將 `use` 區塊改為：`trace: 'retain-on-failure'`, `screenshot: 'only-on-failure'`, `video: 'on'`。
+   - 自動生成 `.env` 與 `.env.example` 檔案（包含 ACCOUNT / PASSWORD 範例），並確保 `.gitignore` 已忽略 `.env` 與 `manual-traces/`。
+5. **完成回報與防呆提醒**：安裝完畢後向使用者回報。**【重要】** 必須提醒使用者：雖然裝了 VSCode 擴充功能，但請**不要**使用面板上的「Record new」按鈕，因為它會跳過防護網。請務必對 AI 說「我要錄腳本」或手動輸入 `npm run codegen`。
 
 ---
 
