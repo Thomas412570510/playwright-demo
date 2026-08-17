@@ -1,10 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const ffmpeg = require('fluent-ffmpeg');
+const { execFileSync } = require('child_process');
 const ffmpegStatic = require('ffmpeg-static');
-
-// 告訴 fluent-ffmpeg 引擎在哪裡
-ffmpeg.setFfmpegPath(ffmpegStatic);
 
 const testResultsDir = path.join(__dirname, 'test-results');
 
@@ -41,30 +38,25 @@ if (webmFiles.length === 0) {
 console.log(`找到 ${webmFiles.length} 個影片，準備開始轉檔為 .mp4...`);
 
 // 轉檔函數
-function convertFile(webmPath) {
-  return new Promise((resolve, reject) => {
-    const mp4Path = webmPath.replace('.webm', '.mp4');
-    
-    // 如果已經存在 mp4 就跳過
-    if (fs.existsSync(mp4Path)) {
-      console.log(`[跳過] 已存在: ${mp4Path}`);
-      return resolve();
-    }
+async function convertFile(webmPath) {
+  const mp4Path = webmPath.replace('.webm', '.mp4');
+  
+  // 如果已經存在 mp4 就跳過
+  if (fs.existsSync(mp4Path)) {
+    console.log(`[跳過] 已存在: ${mp4Path}`);
+    return;
+  }
 
-    console.log(`[轉檔中] ${webmPath} -> .mp4`);
-    
-    ffmpeg(webmPath)
-      .output(mp4Path)
-      .on('end', () => {
-        console.log(`[完成] ${mp4Path}`);
-        resolve();
-      })
-      .on('error', (err) => {
-        console.error(`[失敗] ${webmPath}:`, err.message);
-        reject(err);
-      })
-      .run();
-  });
+  console.log(`[轉檔中] ${webmPath} -> .mp4`);
+  
+  try {
+    // 原生呼叫 ffmpeg 執行檔
+    execFileSync(ffmpegStatic, ['-i', webmPath, mp4Path]);
+    console.log(`[完成] ${mp4Path}`);
+  } catch (err) {
+    console.error(`[失敗] ${webmPath}:`, err.message);
+    throw err;
+  }
 }
 
 // 依序轉換所有檔案
