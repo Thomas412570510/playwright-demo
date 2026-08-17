@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node run-tests.js",
     "convert-video": "node convert-video.js",
-    "codegen": "playwright codegen --save-trace=trace.zip"
+    "codegen": "node record-session.js"
   },
   "keywords": [],
   "author": "",
