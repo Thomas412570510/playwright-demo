@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node run-tests.js",
-    "convert-video": "node convert-video.js"
+    "convert-video": "node convert-video.js",
+    "codegen": "playwright codegen --save-trace=trace.zip"
   },
   "keywords": [],
   "author": "",
