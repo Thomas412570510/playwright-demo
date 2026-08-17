@@ -7,7 +7,6 @@
     "**/package-lock.json": true,
     "**/package.json": true,
     "**/playwright-report": true,
-    "**/playwright.config.ts": true,
     "**/README.md": true,
     "**/convert-video.js": true,
     "**/run-tests.js": true,
