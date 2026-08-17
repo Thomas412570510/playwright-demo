@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "node run-tests.js",
+    "convert-video": "node convert-video.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -12,6 +15,8 @@
     "@types/node": "^26.2.0"
   },
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "ffmpeg-static": "^5.3.0",
+    "fluent-ffmpeg": "^2.1.3"
   }
 }

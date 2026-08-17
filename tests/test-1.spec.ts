@@ -1,29 +1,36 @@
 import { test, expect } from '@playwright/test';
 
-test('自動化待辦事項操作 (TodoMVC)', async ({ page }) => {
-  // 1. 進入公開的測試網站 (無須登入)
-  await page.goto('https://demo.playwright.dev/todomvc/');
+test('gemini article flow', async ({ page }) => {
+  // 1. 進入 Gemini 首頁
+  await page.goto('https://gemini.google.com/app?hl=zh-TW', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000,
+  });
 
-  // 2. 找到輸入框
-  const newTodo = page.getByPlaceholder('What needs to be done?');
-
-  // 3. 快速輸入兩個待辦事項
-  await newTodo.fill('學習 Playwright 自動化');
-  await page.keyboard.press('Enter');
+  // 2. 輸入提示詞
+  const promptBox = page.getByRole('textbox', { name: /請輸入 Gemini 提示詞/i });
+  await expect(promptBox).toBeVisible({ timeout: 30000 });
+  await promptBox.fill('你覺得playwright的極限在哪');
   
-  await newTodo.fill('讓工作效率翻倍');
+  // 3. 送出提示詞 (按下 Enter 鍵)
   await page.keyboard.press('Enter');
 
-  // 4. 檢查是不是成功新增了兩筆？
-  await expect(page.getByTestId('todo-title')).toHaveText([
-    '學習 Playwright 自動化',
-    '讓工作效率翻倍'
-  ]);
+  // 等待 AI 思考並產出文字 (因為我們沒有登入，這裡一定會等不到而 Timeout 失敗)
+  const mechanism = page.getByText(/運作機制： Playwright 放棄了 Selenium/i).first();
+  await expect(mechanism).toBeVisible({ timeout: 30000 });
+  await mechanism.click();
 
-  // 5. 點擊第一個待辦事項旁邊的「完成勾選框」
-  await page.locator('.toggle').first().click();
+  const browserContext = page.getByText(/由於每個 Browser Context 都是獨立的行程/i).first();
+  await expect(browserContext).toBeVisible({ timeout: 30000 });
+  await browserContext.click();
 
-  // 6. 檢查左下角的計數器，確認剩下 1 個未完成
-  const todoCount = page.getByTestId('todo-count');
-  await expect(todoCount).toContainText('1 item left');
+  const heading = page.getByRole('heading', {
+    name: /瀏覽器與網路環境極限：動態渲染與反爬蟲機制/i,
+  }).first();
+  await expect(heading).toBeVisible({ timeout: 30000 });
+  await heading.click();
+
+  const finalText = page.getByText(/它不是萬能的爬蟲工具：/i).first();
+  await expect(finalText).toBeVisible({ timeout: 30000 });
+  await finalText.click();
 });

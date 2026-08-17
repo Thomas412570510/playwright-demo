@@ -5,8 +5,8 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import dotenv from 'dotenv';
-// 強制載入 D 槽的環境變數檔
-dotenv.config({ path: 'D:\\PlaywrightData\\.env' });
+// 讀取本地端的 .env 檔案
+dotenv.config();
 
 import fs from 'fs';
 import path from 'path';
