@@ -14,7 +14,7 @@ description: Playwright 企業級擴充技能包 (極致隔離建置版)。包�
    - **進入 `playwright-tests/` 資料夾內**，執行 Playwright 官方初始化指令建立基礎環境（例如 `npm create playwright@latest . --quiet --browser=chromium --lang=TypeScript`）。
 3. **安裝進階依賴與引擎 (限隔離區內)**：
    - 在 `playwright-tests/` 內執行 `npm install ffmpeg-static fluent-ffmpeg`。
-   - 將本技能庫 `scripts/` 資料夾底下的 `record-session.js` 與 `convert-video.js` 複製到 **`playwright-tests/`** 內。
+   - 將工作區根目錄中 `.agents/skills/record-playwright/scripts/` 資料夾底下的 `record-session.js` 與 `convert-video.js` 複製到 **`playwright-tests/`** 內。
 4. **環境防護與配置魔改 (限隔離區內)**：
    - 修改 `playwright-tests/package.json`，在 `"scripts"` 中加入 `"codegen": "node record-session.js"`。
    - 修改 `playwright-tests/playwright.config.ts`，強制將 `use` 區塊改為：`trace: 'retain-on-failure'`, `screenshot: 'only-on-failure'`, `video: 'on'`。
