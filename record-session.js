@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { chromium } = require('@playwright/test');
 
 (async () => {
@@ -13,7 +15,7 @@ const { chromium } = require('@playwright/test');
   console.log('--------------------------------------------------');
   console.log('✅ 已喚醒 Playwright Inspector！');
   console.log('👉 請在彈出的視窗中操作，您的每一次點擊都會被自動截圖紀錄。');
-  console.log('👉 操作完畢後，請直接關閉瀏覽器，系統會自動儲存 trace.zip。');
+  console.log('👉 操作完畢後，請直接關閉瀏覽器，系統會自動將紀錄存檔。');
   console.log('--------------------------------------------------');
   
   let isSaved = false;
@@ -22,11 +24,24 @@ const { chromium } = require('@playwright/test');
   page.on('close', async () => {
     if (!isSaved) {
       isSaved = true;
-      console.log('📦 偵測到視窗關閉，正在將您的操作截圖打包成 trace.zip...');
+      console.log('📦 偵測到視窗關閉，正在打包您的操作截圖...');
       try {
-        await context.tracing.stop({ path: 'trace.zip' });
+        // 確保專屬資料夾存在
+        const tracesDir = path.join(__dirname, 'manual-traces');
+        if (!fs.existsSync(tracesDir)) {
+          fs.mkdirSync(tracesDir);
+        }
+
+        // 自動計算是第幾個腳本
+        const files = fs.readdirSync(tracesDir);
+        const traceCount = files.filter(f => f.startsWith('trace-') && f.endsWith('.zip')).length + 1;
+        const fileName = `trace-${traceCount}.zip`;
+        const filePath = path.join(tracesDir, fileName);
+
+        await context.tracing.stop({ path: filePath });
         await browser.close();
-        console.log('🎉 截圖軌跡存檔完成！(檔案: trace.zip)');
+        console.log(`🎉 截圖軌跡存檔完成！`);
+        console.log(`📁 檔案已安全存放至專屬資料夾: manual-traces/${fileName}`);
       } catch (e) {
         console.log('儲存時發生錯誤:', e.message);
       }
