@@ -1,13 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-import dotenv from 'dotenv';
-// 讀取本地端的 .env 檔案
-dotenv.config();
-
 import fs from 'fs';
 import path from 'path';
 
