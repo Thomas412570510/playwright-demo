@@ -15,43 +15,35 @@ const { chromium } = require('@playwright/test');
   console.log('--------------------------------------------------');
   console.log('✅ 已喚醒 Playwright Inspector！');
   console.log('👉 請在彈出的視窗中操作，您的每一次點擊都會被自動截圖紀錄。');
-  console.log('👉 操作完畢後，請直接關閉瀏覽器，系統會自動將紀錄存檔。');
+  console.log('👉 【重要】操作完畢後，請點擊 Inspector 錄製器上面的「Resume (播放鍵 ▶️)」來結束錄製。');
+  console.log('👉 【警告】千萬不要直接按 X 關閉瀏覽器，否則系統來不及存檔！');
   console.log('--------------------------------------------------');
   
-  let isSaved = false;
-
-  // 監聽視窗關閉事件，確保一定會存檔
-  page.on('close', async () => {
-    if (!isSaved) {
-      isSaved = true;
-      console.log('📦 偵測到視窗關閉，正在打包您的操作截圖...');
-      try {
-        // 確保專屬資料夾存在
-        const tracesDir = path.join(__dirname, 'manual-traces');
-        if (!fs.existsSync(tracesDir)) {
-          fs.mkdirSync(tracesDir);
-        }
-
-        // 自動計算是第幾個腳本
-        const files = fs.readdirSync(tracesDir);
-        const traceCount = files.filter(f => f.startsWith('trace-') && f.endsWith('.zip')).length + 1;
-        const fileName = `trace-${traceCount}.zip`;
-        const filePath = path.join(tracesDir, fileName);
-
-        await context.tracing.stop({ path: filePath });
-        await browser.close();
-        console.log(`🎉 截圖軌跡存檔完成！`);
-        console.log(`📁 檔案已安全存放至專屬資料夾: manual-traces/${fileName}`);
-      } catch (e) {
-        console.log('儲存時發生錯誤:', e.message);
-      }
-    }
-  });
-
   try {
-    // 開啟錄製器 (會停在這裡直到視窗關閉)
+    // 開啟錄製器 (會停在這裡，直到按下 Resume 按鈕)
     await page.pause();
+
+    // 當使用者按下 Resume，程式會走到這裡，此時瀏覽器還沒關閉，可以安全存檔
+    console.log('📦 偵測到錄製結束，正在打包您的操作截圖...');
+    
+    const tracesDir = path.join(__dirname, 'manual-traces');
+    if (!fs.existsSync(tracesDir)) {
+      fs.mkdirSync(tracesDir);
+    }
+
+    const files = fs.readdirSync(tracesDir);
+    const traceCount = files.filter(f => f.startsWith('trace-') && f.endsWith('.zip')).length + 1;
+    const fileName = `trace-${traceCount}.zip`;
+    const filePath = path.join(tracesDir, fileName);
+
+    await context.tracing.stop({ path: filePath });
+    console.log(`🎉 截圖軌跡存檔完成！`);
+    console.log(`📁 檔案已安全存放至專屬資料夾: manual-traces/${fileName}`);
+
   } catch (err) {
-    // 視窗手動關閉時可能會丟出錯誤，可以直接忽略
+    console.log('❌ 存檔失敗！您似乎直接點擊 X 關閉了瀏覽器，導致系統來不及將截圖打包。');
+    console.log('💡 下次請記得點擊 Inspector 視窗上的「Resume (播放鍵 ▶️)」來正確結束錄製喔！');
+  } finally {
+    await browser.close().catch(() => {});
   }
 })();
