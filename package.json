@@ -1,16 +1,25 @@
 {
-  "name": "demo4",
+  "name": "playwright-enterprise-demo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Enterprise-grade Playwright E2E testing framework with automated video recording and trace capture",
+  "main": "run-tests.js",
   "scripts": {
     "test": "node run-tests.js",
+    "test:headed": "npx playwright test --headed",
     "convert-video": "node convert-video.js",
-    "codegen": "node record-session.js"
+    "codegen": "node record-session.js",
+    "show-report": "npx playwright show-report"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "playwright",
+    "testing",
+    "e2e",
+    "automation",
+    "video-recording",
+    "trace-viewer"
+  ],
+  "author": "Thomas412570510",
+  "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.2.0"
